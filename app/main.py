@@ -1,3 +1,4 @@
+#app/main.py
 from sqlalchemy import func, select
 from fastapi import FastAPI, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,6 +7,7 @@ from app.models.query_records import QueryRecord
 from app.schemas.query_records import QueryRecordCreate, QueryRecordResponse, QueryRecordsListResponse
 from tronpy import Tron
 import asyncio
+import uvicorn
 
 app = FastAPI()
 
@@ -72,3 +74,6 @@ async def get_records(
     records_list = [QueryRecordResponse.from_orm(record) for record in records]
     
     return QueryRecordsListResponse(records=records_list, total=total, page=page, size=size)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
